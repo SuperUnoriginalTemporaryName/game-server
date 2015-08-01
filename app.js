@@ -23,9 +23,14 @@ try {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: 'http://test.com'
+    callbackURL: 'http://localhost:3000/auth/facebook/callback'
   },
   function (accessToken, refreshToken, profile, done) {
     console.log(profile);
   }
 ));
+
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {}));
+
+app.listen(3000);
