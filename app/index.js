@@ -5,6 +5,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var colors           = require('colors');
 var format           = require('format');
 var checkEnv         = require('check-env');
+var Sequelize        = require('sequelize');
+var sequelize;
 
 //
 // CHECK ENV VARS
@@ -12,13 +14,18 @@ var checkEnv         = require('check-env');
 try {
   checkEnv([
     'FACEBOOK_APP_ID',
-    'FACEBOOK_APP_SECRET'
+    'FACEBOOK_APP_SECRET',
+    'POSTGRES_CONNECTION_STRING'
   ]);
 } catch (e) {
   console.log(e.toString().red);
   console.log('Quitting :)');
   process.exit();
 }
+
+sequelize = new Sequelize(process.env.POSTGRES_CONNECTION_STRING, {
+  dialect: 'postgres'
+});
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
