@@ -1,11 +1,14 @@
 {
   "development": {
-    "use_env_variable": "POSTGRES_CONNECTION_STRING"
+    "use_env_variable": "POSTGRES_CONNECTION_STRING",
+    "dialect": "postgres"
   },
   "test": {
-    "use_env_variable": "POSTGRES_CONNECTION_STRING"
+    "use_env_variable": "POSTGRES_CONNECTION_STRING",
+    "dialect": "postgres"
   },
   "production": {
-    "use_env_variable": "POSTGRES_CONNECTION_STRING"
+    "use_env_variable": "POSTGRES_CONNECTION_STRING",
+    "dialect": "postgres"
   }
 }
