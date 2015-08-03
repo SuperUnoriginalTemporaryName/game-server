@@ -1,0 +1,11 @@
+{
+  "development": {
+    "use_env_variable": "POSTGRES_CONNECTION_STRING"
+  },
+  "test": {
+    "use_env_variable": "POSTGRES_CONNECTION_STRING"
+  },
+  "production": {
+    "use_env_variable": "POSTGRES_CONNECTION_STRING"
+  }
+}
