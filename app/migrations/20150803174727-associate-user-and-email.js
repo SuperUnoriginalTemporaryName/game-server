@@ -3,7 +3,7 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface
-      .addColumn('Emails', 'user', {
+      .addColumn('Emails', 'UserId', {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: 'Users',
@@ -14,6 +14,6 @@ module.exports = {
 
   down: function (queryInterface, Sequelize) {
     return queryInterface
-      .removeColumn('Emails', 'user');
+      .removeColumn('Emails', 'UserId');
   }
 };
