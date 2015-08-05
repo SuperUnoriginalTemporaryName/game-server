@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/SuperUnoriginalTemporaryName/game-server",
   "dependencies": {
+    "babel": "^5.8.20",
     "check-env": "^1.2.0",
+    "es6-promise": "^2.3.0",
     "express": "^4.13.2",
+    "express-session": "^1.11.3",
     "format": "^0.2.1",
     "passport": "^0.2.2",
     "passport-facebook": "^2.0.0",
