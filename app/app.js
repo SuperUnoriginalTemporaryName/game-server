@@ -40,7 +40,7 @@ passport.use(new FacebookStrategy({
     profileFields: ['emails']
   },
   function (accessToken, refreshToken, profile, done) {
-    var email = profile.emails[0];
+    var email = profile.emails[0].value;
 
     var createUser = function () {
       return new Promise((resolve, reject) => {
@@ -48,11 +48,16 @@ passport.use(new FacebookStrategy({
         db.sequelize.transaction(t => {
           return db.User.create({}, { transaction: t })
             .then(user => {
-              user.setEmails([{ email: email }], { transaction: t })
               u = user;
+              return db.Email
+                .create({ 
+                  email: email, 
+                  UserId: u.id 
+                }, {
+                  transaction: t
+                });
             });
         }).then(() => {
-          debugger;
           resolve(u);
         }).catch(reject);
       });
