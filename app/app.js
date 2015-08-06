@@ -76,45 +76,6 @@ passport.use(new FacebookStrategy({
       .then(function (user) {
         done(null, user);
       });
-
-
-
-    // var promises = [];
-
-    // var found = [];
-
-    // var addEmails = function (user) {
-    //   profile.emails.forEach(function (email) {
-    //     db.Email.findOrCreate(email)
-    //   });
-    // };
-
-    // var createNewUser = function () {
-    //   db.User.create({})
-    // };
-
-    // profile.emails.forEach(function (email) {
-    //   var promise = db.Email.find({
-    //     where: { email: email.value }
-    //   });
-
-    //   promise.then(function (obj) {
-    //     if (obj) found.push(obj);
-    //   });
-
-    //   promises.push(promise);
-    // });
-
-    // Promise
-    //   .all(promises)
-    //   .then(function () {
-    //     var userPromise;
-    //     if (found.length === 0)
-    //       userPromise = createNewUser();
-
-    //     userPromise
-    //       .then(addEmails);
-    //   });
   }
 ));
 
