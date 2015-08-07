@@ -8,6 +8,7 @@ var format           = require('format');
 var checkEnv         = require('check-env');
 var db               = require('./models');
 var Promise          = require('es6-promise').Promise;
+var tasks            = require('./tasks');
 
 //
 // CHECK ENV VARS
@@ -31,7 +32,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
