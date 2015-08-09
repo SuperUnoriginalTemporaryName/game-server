@@ -15,6 +15,14 @@ var Users = {
                 }, {
                   transaction: t
                 });
+            })
+            .then(email => {
+              return db.Stats
+                .create({
+                  UserId: u.id
+                }, {
+                  transaction: t
+                });
             });
         }).then(() => {
           resolve(u);
