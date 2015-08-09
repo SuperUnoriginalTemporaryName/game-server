@@ -87,6 +87,13 @@ app.get('/auth/failure', (req, res) => {
 });
 
 app.use(middleware.auth);
+
+app.get('/stats', (req, res, next) => {
+  req.user.getStats()
+    .then(stats => res.status(200).json(stats).end())
+    .catch(next);
+});
+
 app.listen(port, () => {
   var portStr = format('(PORT {})', port);
   console.log('ヽ༼ ಠ益ಠ ༽ﾉ'.green);
