@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
     classMethods: {
       associate: function (models) {
         Stats.belongsTo(models.User, {
-          foreignKey: 'UserId'
+          foreignKey: 'userId'
         });
       }
     }
