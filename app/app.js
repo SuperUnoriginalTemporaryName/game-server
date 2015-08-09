@@ -7,7 +7,6 @@ var colors           = require('colors');
 var format           = require('string-format');
 var checkEnv         = require('check-env');
 var db               = require('./models');
-var Promise          = require('es6-promise').Promise;
 var tasks            = require('./tasks');
 var port             = process.env.PORT || 3000;
 
@@ -62,22 +61,29 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  done(null, { 'fake': 'user', 'id': 0 });
+  debugger;
+  db.User
+    .findOne({
+      where: {
+        id: id
+      }
+    })
+    .then(user => done(null, user))
+    .catch(done);
 });
 
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { 
-  successRedirect: '/test',
-  failureRedirect: '/fail'
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/auth/success',
+  failureRedirect: '/auth/failure'
 }));
 
-app.get('/test', function (req, res) {
-  debugger;
+app.get('/auth/success', (req, res) => {
+  res.status(200).end();
 });
 
-app.get('/fail', function (req, res) {
-  debugger;
-  res.status(200).send("FAIL").end();
+app.get('/auth/failure', (req, res) => {
+  res.status(401).end();
 });
 
 app.listen(port, () => {
