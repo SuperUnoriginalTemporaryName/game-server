@@ -9,6 +9,7 @@ var checkEnv         = require('check-env');
 var db               = require('./models');
 var tasks            = require('./tasks');
 var port             = process.env.PORT || 3000;
+var middleware       = require('./middleware');
 
 //
 // CHECK ENV VARS
@@ -85,6 +86,7 @@ app.get('/auth/failure', (req, res) => {
   res.status(401).end();
 });
 
+app.use(middleware.auth);
 app.listen(port, () => {
   var portStr = format('(PORT {})', port);
   console.log('ヽ༼ ಠ益ಠ ༽ﾉ'.green);
