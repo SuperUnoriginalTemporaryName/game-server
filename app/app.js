@@ -4,11 +4,12 @@ var session          = require('express-session');
 var passport         = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var colors           = require('colors');
-var format           = require('format');
+var format           = require('string-format');
 var checkEnv         = require('check-env');
 var db               = require('./models');
 var Promise          = require('es6-promise').Promise;
 var tasks            = require('./tasks');
+var port             = process.env.PORT || 3000;
 
 //
 // CHECK ENV VARS
@@ -25,11 +26,18 @@ try {
   process.exit();
 }
 
+//
+// SESSION CONFIGURATION 
+//
 app.use(session({ 
   saveUninitialized: false,
   resave: false,
   secret: 'westerfeldian' 
 }));
+
+//
+// AUTH CONFIGURATION
+//
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,43 +47,13 @@ passport.use(new FacebookStrategy({
     callbackURL: 'http://localhost:3000/auth/facebook/callback',
     profileFields: ['emails']
   },
-  function (accessToken, refreshToken, profile, done) {
+  (accessToken, refreshToken, profile, done) => {
     var email = profile.emails[0].value;
-
-    var createUser = function () {
-      return new Promise((resolve, reject) => {
-        var u;
-        db.sequelize.transaction(t => {
-          return db.User.create({}, { transaction: t })
-            .then(user => {
-              u = user;
-              return db.Email
-                .create({ 
-                  email: email, 
-                  UserId: u.id 
-                }, {
-                  transaction: t
-                });
-            });
-        }).then(() => {
-          resolve(u);
-        }).catch(reject);
-      });
-    };
-
-    var getUser = function (emailObj) {
-      if (emailObj) return emailObj.getUser();
-      else return createUser();
-    };
-
-    db.Email
-      .find({
-        where: { email: email.value }
-      })
-      .then(getUser)
-      .then(function (user) {
+    tasks.users.getOrCreateByEmail(email)
+      .then(user => {
         done(null, user);
-      });
+      })
+      .catch(done);
   }
 ));
 
@@ -98,7 +76,13 @@ app.get('/test', function (req, res) {
 });
 
 app.get('/fail', function (req, res) {
+  debugger;
   res.status(200).send("FAIL").end();
 });
 
-app.listen(3000);
+app.listen(port, () => {
+  var portStr = format('(PORT {})', port);
+  console.log('ヽ༼ ಠ益ಠ ༽ﾉ'.green);
+  console.log('WESTERFELD UP N\' RUNNIN\' BOSS'.green);
+  console.log(portStr.green);
+});
