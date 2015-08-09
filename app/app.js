@@ -10,6 +10,9 @@ var db               = require('./models');
 var tasks            = require('./tasks');
 var port             = process.env.PORT || 3000;
 var middleware       = require('./middleware');
+var http             = require('http').Server(app);
+var io               = require('socket.io')(http);
+var path             = require('path');
 
 //
 // CHECK ENV VARS
@@ -79,7 +82,9 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 }));
 
 app.get('/auth/success', (req, res) => {
-  res.status(200).end();
+  var indexPath = path.join(__dirname, 'static/index.html');
+  res.sendFile(indexPath);
+  // res.status(200).end();
 });
 
 app.get('/auth/failure', (req, res) => {
@@ -94,7 +99,11 @@ app.get('/stats', (req, res, next) => {
     .catch(next);
 });
 
-app.listen(port, () => {
+io.on('connection', socket => {
+  console.log('a user connected');
+});
+
+http.listen(port, () => {
   var portStr = format('(PORT {})', port);
   console.log('ヽ༼ ಠ益ಠ ༽ﾉ'.green);
   console.log('WESTERFELD UP N\' RUNNIN\' BOSS'.green);
