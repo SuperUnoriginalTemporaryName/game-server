@@ -61,7 +61,6 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  debugger;
   db.User
     .findOne({
       where: {
