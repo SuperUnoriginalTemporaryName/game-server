@@ -1,11 +1,17 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Matchmaking = sequelize.define('Matchmaking', {
-    userId: DataTypes.INTEGER
+    userOne: DataTypes.INTEGER,
+    userTwo: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
-        Matchmaking.belongsTo(models.User, {
+        Matchmaking.hasOne(models.User, {
+          as: 'userOne',
+          foreignKey: 'userId'
+        });
+        Matchmaking.hasOne(models.User, {
+          as: 'userTwo', 
           foreignKey: 'userId'
         });
       }
