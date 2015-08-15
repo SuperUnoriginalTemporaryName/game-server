@@ -1,8 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Matchmaking = sequelize.define('Matchmaking', {
-    userOne: DataTypes.INTEGER,
-    userTwo: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
