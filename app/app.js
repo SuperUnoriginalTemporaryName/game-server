@@ -13,6 +13,7 @@ var routers          = require('./routers');
 var http             = require('http').Server(app);
 var io               = require('socket.io')(http);
 var path             = require('path');
+var cookieParser     = require('cookie-parser')();
 
 //
 // CHECK ENV VARS
@@ -30,13 +31,20 @@ try {
 }
 
 //
-// CONFIGURE EXPRESS
+// CONFIGURE SESSION
 //
-app.use(session({ 
+var sessionMiddleware = session({ 
   saveUninitialized: false,
   resave: false,
-  secret: 'westerfeldian' 
-}));
+  secret: 'westerfeldian',
+  keys: ['chiiiiaaa', 'key2']
+});
+
+//
+// CONFIGURE EXPRESS
+//
+app.use(cookieParser);
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', routers.auth);
@@ -46,8 +54,14 @@ app.use('/stats', routers.stats);
 //
 // CONFIGURE SOCKET.IO
 //
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, socket.request.res, next);
+});
 io.on('connection', socket => {
-  console.log('a user connected');
+  var id = socket.request.session.passport.user;
+  tasks.users
+    .getById(id)
+    .then(tasks.matchmaking.search);
 });
 
 http.listen(port, () => {
