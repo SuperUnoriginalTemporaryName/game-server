@@ -6,11 +6,11 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Matchmaking.hasOne(models.User, {
           as: 'userOne',
-          foreignKey: 'userId'
+          foreignKey: 'id'
         });
         Matchmaking.hasOne(models.User, {
           as: 'userTwo', 
-          foreignKey: 'userId'
+          foreignKey: 'id'
         });
       }
     }

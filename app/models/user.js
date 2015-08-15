@@ -3,10 +3,13 @@ module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {}, {
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Email, { foreignKey: 'userId' });
+        User.hasMany(models.Email, {
+          as: 'emails',
+          foreignKey: 'userId'
+        });
         User.hasOne(models.Stats, { 
-          foreignKey: 'userId',
-          as: 'Stats'
+          as: 'stats',
+          foreignKey: 'userId'
         });
       }
     }
