@@ -8,8 +8,31 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      userOne: {
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
         type: Sequelize.INTEGER
+      },
+      userTwo: {
+        allowNull: true,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        type: Sequelize.INTEGER
+      },
+      cancelled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      matched: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
