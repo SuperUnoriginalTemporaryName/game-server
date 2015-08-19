@@ -40,6 +40,12 @@ var Users = {
         where: { email: email }
       })
       .then(getUser);
+  },
+
+  getById: id => {
+    return db.User.find({
+      where: { id: id }
+    });
   }
 };
 
